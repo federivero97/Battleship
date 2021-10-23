@@ -9,7 +9,7 @@ const EndScreen = () => {
   }
 
   return (
-    <div>
+    <div className="end-screen">
       <div> Result </div>
       <button type="button" onClick={handleClick}>
         Back to Start Screen
