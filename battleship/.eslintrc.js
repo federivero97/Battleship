@@ -26,5 +26,6 @@ module.exports = {
     "prettier/prettier": "error",
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "arrow-body-style": ["error", "always"],
+    "no-underscore-dangle": ["error", { "allow": ["__REDUX_DEVTOOLS_EXTENSION__"] }]
   },
 };

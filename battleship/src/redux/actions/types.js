@@ -1,0 +1,2 @@
+export const SET_PLAYER_NAME = 'SET_PLAYER_NAME';
+export const DELETE_PLAYER_NAME = 'DELETE_PLAYER_NAME';
