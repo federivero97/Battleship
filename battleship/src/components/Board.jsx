@@ -4,41 +4,42 @@ import Cell from './Cell';
 
 const Board = (props) => {
   const { data, handleCellClick } = props;
-  const columns = [];
-
-  data.forEach((column, i) => {
-    const cells = [];
-
-    column.forEach((row) => {
-      cells.push(
-        <Cell
-          key={row.id + (i + 1).toString()}
-          id={row.id + (i + 1).toString()}
-          column={row.id}
-          row={i + 1}
-          color={row.color}
-          available={row.available}
-          selected={row.selected}
-          shipId={row.shipId}
-          handleCellClick={(e) => {
-            return handleCellClick(e);
-          }}
-        />
-      );
-    });
-
-    columns.push(<tr key={i.toString()}>{cells}</tr>);
-  });
 
   return (
     <table className="table">
-      <tbody>{columns}</tbody>
+      <tbody>
+        {data !== []
+          ? data.map((row) => {
+              return (
+                <tr key={row.id}>
+                  {row.data.map((column) => {
+                    return (
+                      <Cell
+                        key={row.id + column.id}
+                        id={row.id + column.id}
+                        row={row.id}
+                        column={column.id}
+                        color={column.color}
+                        available={column.available}
+                        selected={column.selected}
+                        shipId={column.shipId}
+                        handleCellClick={(e) => {
+                          return handleCellClick(e);
+                        }}
+                      />
+                    );
+                  })}
+                </tr>
+              );
+            })
+          : null}
+      </tbody>
     </table>
   );
 };
 
 Board.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.array).isRequired,
+  data: PropTypes.arrayOf(PropTypes.object).isRequired,
   handleCellClick: PropTypes.func.isRequired
 };
 
