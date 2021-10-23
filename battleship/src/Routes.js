@@ -1,18 +1,24 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
+import EndScreen from './components/EndScreen';
+import GameScreen from './components/GameScreen';
+import StartScreen from './components/StartScreen';
 
 const Routes = () => {
   return (
     <div className="container bwm-container">
       <Switch>
-        <Route exact path="/">
-          Start Screen
+        <Route exact path="/start">
+          <StartScreen />
         </Route>
         <Route exact path="/game">
-          Game Screen
+          <GameScreen />
         </Route>
         <Route exact path="/end">
-          End Screen
+          <EndScreen />
+        </Route>
+        <Route path="/">
+          <Redirect to="/start" />
         </Route>
       </Switch>
     </div>
