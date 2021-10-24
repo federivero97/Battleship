@@ -3,7 +3,7 @@ import reducer from './reducers';
 
 const initialState = {
   cpuBoard: [],
-  gameStart: false,
+  gameIsRunning: false,
   gameResult: null,
   playerBoard: [],
   playerName: '',

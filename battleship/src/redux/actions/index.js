@@ -1,8 +1,9 @@
 import {
-  SET_PLAYER_NAME,
+  DELETE_PLAYER_BOARD,
   DELETE_PLAYER_NAME,
   SET_PLAYER_BOARD,
-  DELETE_PLAYER_BOARD
+  SET_PLAYER_NAME,
+  SET_GAME_IS_RUNNING
 } from './types';
 
 // PLAYER BOARD ACTIONS
@@ -30,5 +31,13 @@ export const setPlayerName = (name) => {
 export const deletePlayerName = () => {
   return {
     type: DELETE_PLAYER_NAME
+  };
+};
+
+// GAME IS RUNNING ACTIONS
+export const setGameIsRunning = (bool) => {
+  return {
+    type: SET_GAME_IS_RUNNING,
+    payload: bool
   };
 };

@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { setPlayerName, setPlayerBoard } from '../redux/actions';
+import {
+  setPlayerName,
+  setPlayerBoard,
+  setGameIsRunning
+} from '../redux/actions';
 import { createNewBoard } from '../helpers/board';
 import Board from './Board';
 
@@ -17,9 +21,10 @@ const StartScreen = () => {
   const [board, setBoard] = useState(createNewBoard());
 
   // Validate
-  function startGame() {
+  function handleStartGame() {
     dispatch(setPlayerName(name));
     dispatch(setPlayerBoard(board));
+    dispatch(setGameIsRunning(true));
     history.push('/game');
   }
 
@@ -37,7 +42,7 @@ const StartScreen = () => {
     setBoard(newBoard);
   };
 
-  const handleChange = (e) => {
+  const handleInputChange = (e) => {
     setName(e.target.value);
   };
 
@@ -52,8 +57,12 @@ const StartScreen = () => {
         />
       ) : null}
       <div className="form">
-        <input placeholder="Player Name" value={name} onChange={handleChange} />
-        <button type="button" onClick={startGame}>
+        <input
+          placeholder="Player Name"
+          value={name}
+          onChange={handleInputChange}
+        />
+        <button type="button" onClick={handleStartGame}>
           START GAME
         </button>
       </div>

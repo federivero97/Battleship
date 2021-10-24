@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setGameIsRunning } from '../redux/actions';
 import { createRandomCPUBoard } from '../helpers/board';
 import Board from './Board';
 
 const GameScreen = () => {
   const history = useHistory();
+  const dispatch = useDispatch();
   const playerName = useSelector((state) => {
     return state.playerName;
   });
@@ -16,10 +18,11 @@ const GameScreen = () => {
   const [firstBoard, setFirstBoard] = useState(playerBoard);
   const [secondBoard, setSecondBoard] = useState(createRandomCPUBoard());
 
-  function quitGame() {
+  function handleQuitGame() {
     setFirstBoard([]);
     setSecondBoard([]);
-    history.push('/end');
+    dispatch(setGameIsRunning(false));
+    history.push('/result');
   }
 
   return (
@@ -34,7 +37,7 @@ const GameScreen = () => {
       </div>
       <div className="info">
         <div> Playing: {playerName} </div>
-        <button type="button" onClick={quitGame}>
+        <button type="button" onClick={handleQuitGame}>
           QUIT GAME
         </button>
       </div>
