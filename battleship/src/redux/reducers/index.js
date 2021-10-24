@@ -1,4 +1,9 @@
-import { SET_PLAYER_NAME, DELETE_PLAYER_NAME } from '../actions/types';
+import {
+  SET_PLAYER_NAME,
+  DELETE_PLAYER_NAME,
+  SET_PLAYER_BOARD,
+  DELETE_PLAYER_BOARD
+} from '../actions/types';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -10,7 +15,17 @@ const reducer = (state, action) => {
     case DELETE_PLAYER_NAME:
       return {
         ...state,
-        playerName: null
+        playerName: ''
+      };
+    case SET_PLAYER_BOARD:
+      return {
+        ...state,
+        playerBoard: action.payload
+      };
+    case DELETE_PLAYER_BOARD:
+      return {
+        ...state,
+        playerBoard: []
       };
     default:
       return state;

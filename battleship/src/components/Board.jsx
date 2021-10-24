@@ -11,14 +11,14 @@ const Board = (props) => {
         {data !== []
           ? data.map((row) => {
               return (
-                <tr key={row.id}>
-                  {row.data.map((column) => {
+                <tr key={row[0].row}>
+                  {row.map((column) => {
                     return (
                       <Cell
-                        key={row.id + column.id}
-                        id={row.id + column.id}
-                        row={row.id}
-                        column={column.id}
+                        key={column.id}
+                        id={column.id}
+                        row={column.row}
+                        column={column.column}
                         color={column.color}
                         available={column.available}
                         selected={column.selected}
@@ -39,7 +39,7 @@ const Board = (props) => {
 };
 
 Board.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.object).isRequired,
+  data: PropTypes.arrayOf(PropTypes.array).isRequired,
   handleCellClick: PropTypes.func.isRequired
 };
 
