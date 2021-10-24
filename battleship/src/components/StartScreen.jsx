@@ -20,14 +20,6 @@ const StartScreen = () => {
   const [name, setName] = useState(playerName);
   const [board, setBoard] = useState(createNewBoard());
 
-  // Validate
-  function handleStartGame() {
-    dispatch(setPlayerName(name));
-    dispatch(setPlayerBoard(board));
-    dispatch(setGameIsRunning(true));
-    history.push('/game');
-  }
-
   const handleCellClick = (e) => {
     let newColor;
 
@@ -45,6 +37,29 @@ const StartScreen = () => {
   const handleInputChange = (e) => {
     setName(e.target.value);
   };
+
+  const validation = () => {
+    let flag = true;
+
+    if (!name) {
+      flag = false;
+    }
+    // VALIDATE PLAYER BOARD
+    return flag;
+  };
+
+  function startGame() {
+    dispatch(setPlayerName(name));
+    dispatch(setPlayerBoard(board));
+    dispatch(setGameIsRunning(true));
+    history.push('/game');
+  }
+
+  function handleStartGame() {
+    if (validation()) {
+      startGame();
+    }
+  }
 
   return (
     <div className="start-screen">
