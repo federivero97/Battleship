@@ -3,7 +3,13 @@ import PropTypes from 'prop-types';
 import Cell from './Cell';
 
 const Board = (props) => {
-  const { data, handleCellClick } = props;
+  const {
+    data,
+    handleCellClick,
+    handleOnDragStart,
+    handleOnDragEnter,
+    handleOnDragEnd
+  } = props;
 
   return (
     <table className="table">
@@ -26,6 +32,15 @@ const Board = (props) => {
                         handleCellClick={(e) => {
                           return handleCellClick(e);
                         }}
+                        handleOnDragStart={(e) => {
+                          return handleOnDragStart(e);
+                        }}
+                        handleOnDragEnter={(e) => {
+                          return handleOnDragEnter(e);
+                        }}
+                        handleOnDragEnd={() => {
+                          return handleOnDragEnd();
+                        }}
                       />
                     );
                   })}
@@ -38,9 +53,19 @@ const Board = (props) => {
   );
 };
 
+Board.defaultProps = {
+  handleCellClick: () => {},
+  handleOnDragStart: () => {},
+  handleOnDragEnter: () => {},
+  handleOnDragEnd: () => {}
+};
+
 Board.propTypes = {
   data: PropTypes.arrayOf(PropTypes.array).isRequired,
-  handleCellClick: PropTypes.func.isRequired
+  handleCellClick: PropTypes.func,
+  handleOnDragStart: PropTypes.func,
+  handleOnDragEnter: PropTypes.func,
+  handleOnDragEnd: PropTypes.func
 };
 
 export default Board;

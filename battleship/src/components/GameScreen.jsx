@@ -28,12 +28,8 @@ const GameScreen = () => {
   return (
     <div className="game-screen">
       <div className="game">
-        {firstBoard !== [] ? (
-          <Board data={firstBoard} handleCellClick={() => {}} />
-        ) : null}
-        {secondBoard !== [] ? (
-          <Board data={secondBoard} handleCellClick={() => {}} />
-        ) : null}
+        {firstBoard !== [] ? <Board data={firstBoard} /> : null}
+        {firstBoard !== [] ? <Board data={secondBoard} /> : null}
       </div>
       <div className="info">
         <div> Playing: {playerName} </div>
