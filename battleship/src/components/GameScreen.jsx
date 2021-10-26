@@ -28,12 +28,21 @@ const GameScreen = () => {
   return (
     <div className="game-screen">
       <div className="game">
-        {firstBoard !== [] ? <Board data={firstBoard} /> : null}
-        {firstBoard !== [] ? <Board data={secondBoard} /> : null}
+        <div className="firstBoard">
+          <span> {playerName}’s Board </span>
+          {firstBoard !== [] ? <Board data={firstBoard} /> : null}
+        </div>
+        <div className="secondBoard">
+          <span> CPU’s Board </span>
+          {secondBoard !== [] ? <Board data={secondBoard} /> : null}
+        </div>
       </div>
       <div className="info">
-        <div> Playing: {playerName} </div>
-        <button type="button" onClick={handleQuitGame}>
+        <div className="info-turn">
+          <span className="label"> Playing: </span>
+          <span className="player"> {playerName} </span>
+        </div>
+        <button className="button" type="button" onClick={handleQuitGame}>
           QUIT GAME
         </button>
       </div>
