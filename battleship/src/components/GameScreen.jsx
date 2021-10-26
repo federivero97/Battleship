@@ -5,6 +5,13 @@ import { setGameIsRunning } from '../redux/actions';
 import { createNewBoard, createRandomBoard } from '../helpers/board';
 import { fire } from '../helpers/cell';
 import Board from './Board';
+import {
+  getMinByAttribute,
+  getMaxByAttribute,
+  isHorizontal,
+  isVertical,
+  shuffle
+} from '../helpers/helpers';
 
 const GameScreen = () => {
   const history = useHistory();
@@ -25,6 +32,7 @@ const GameScreen = () => {
   const [CPUBoard, setCPUBoard] = useState(createNewBoard());
   const [CPUShips, setCPUShips] = useState([]);
   const [playerTurn, setplayerTurn] = useState(true);
+  const [targetShip, setTargetShip] = useState([]);
 
   useEffect(() => {
     const { newBoard, newShips } = createRandomBoard(false);
@@ -32,12 +40,103 @@ const GameScreen = () => {
     setCPUShips(newShips);
   }, []);
 
-  function handleCPUTurns() {
-    const row = Math.floor(Math.random() * 10);
-    const column = Math.floor(Math.random() * 10);
-    const cell = playerBoard[row][column];
+  function selectTargetCell() {
+    let targetCell = null;
 
-    const { board, ships } = fire(playerBoard, playerShips, cell);
+    if (targetShip.length > 0) {
+      let directions = [];
+      if (isHorizontal(targetShip)) {
+        directions.push('left', 'right');
+      }
+      if (isVertical(targetShip)) {
+        directions.push('up', 'down');
+      }
+
+      directions = shuffle(directions);
+
+      while (targetCell === null) {
+        const selectedDirection = directions.pop();
+
+        switch (selectedDirection) {
+          case 'up': {
+            const upCell = getMinByAttribute(targetShip, 'row');
+
+            if (
+              upCell.row > 0 &&
+              !playerBoard[upCell.row - 1][upCell.column].selected
+            ) {
+              targetCell = playerBoard[upCell.row - 1][upCell.column];
+            }
+            break;
+          }
+          case 'down': {
+            const downCell = getMaxByAttribute(targetShip, 'row');
+
+            if (
+              downCell.row < 9 &&
+              !playerBoard[downCell.row + 1][downCell.column].selected
+            ) {
+              targetCell = playerBoard[downCell.row + 1][downCell.column];
+            }
+            break;
+          }
+          case 'left': {
+            const leftCell = getMinByAttribute(targetShip, 'column');
+
+            if (
+              leftCell.column > 0 &&
+              !playerBoard[leftCell.row][leftCell.column - 1].selected
+            ) {
+              targetCell = playerBoard[leftCell.row][leftCell.column - 1];
+            }
+            break;
+          }
+          case 'right': {
+            const rightCell = getMaxByAttribute(targetShip, 'column');
+
+            if (
+              rightCell.column < 9 &&
+              !playerBoard[rightCell.row][rightCell.column + 1].selected
+            ) {
+              targetCell = playerBoard[rightCell.row][rightCell.column + 1];
+            }
+            break;
+          }
+          default:
+            break;
+        }
+      }
+    } else {
+      while (targetCell === null) {
+        const row = Math.floor(Math.random() * 10);
+        const column = Math.floor(Math.random() * 10);
+
+        if (!playerBoard[row][column].selected) {
+          targetCell = playerBoard[row][column];
+        }
+      }
+    }
+
+    return targetCell;
+  }
+
+  function handleCPUTurns() {
+    const targetCell = selectTargetCell();
+
+    const { board, ships, result } = fire(playerBoard, playerShips, targetCell);
+
+    switch (result) {
+      case 'WATER':
+        break;
+      case 'HIT':
+        setTargetShip([...targetShip, targetCell]);
+        break;
+      case 'DESTROYED':
+        setTargetShip([]);
+        break;
+      default:
+        break;
+    }
 
     setPlayerBoard(board);
     setPlayerShips(ships);
@@ -55,7 +154,7 @@ const GameScreen = () => {
 
       setTimeout(() => {
         handleCPUTurns();
-      }, 1000);
+      }, 500);
     }
   }
 

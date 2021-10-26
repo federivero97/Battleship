@@ -9,7 +9,7 @@ import {
 } from '../redux/actions';
 import { createNewBoard, createRandomBoard } from '../helpers/board';
 import { validateCell } from '../helpers/cell';
-import { getFreeId } from '../helpers/helpers';
+import { getFreeId, isHorizontal, isVertical } from '../helpers/helpers';
 import Board from './Board';
 
 const StartScreen = () => {
@@ -77,20 +77,14 @@ const StartScreen = () => {
   const handleOnDragEnter = (e) => {
     if (selectedCells.length >= 1) {
       const lastCell = selectedCells[selectedCells.length - 1];
-      const horizontal = selectedCells.every((c) => {
-        return c.row === e.row;
-      });
-      const vertical = selectedCells.every((c) => {
-        return c.column === e.column;
-      });
 
       if (
         selectedCells.length <= 3 &&
-        ((horizontal &&
+        ((isHorizontal(selectedCells) &&
           e.row === lastCell.row &&
           (e.column === lastCell.column - 1 ||
             e.column === selectedCells[selectedCells.length - 1].column + 1)) ||
-          (vertical &&
+          (isVertical(selectedCells) &&
             e.column === lastCell.column &&
             (e.row === selectedCells[selectedCells.length - 1].row - 1 ||
               e.row === selectedCells[selectedCells.length - 1].row + 1)))

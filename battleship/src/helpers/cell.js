@@ -21,6 +21,7 @@ export function validateCell(board, cell, shipId) {
 }
 
 export function fire(board, ships, cell) {
+  let result;
   const targetedCell = board[cell.row][cell.column];
   targetedCell.selected = true;
 
@@ -44,14 +45,17 @@ export function fire(board, ships, cell) {
         const part = board[p.coordinates.x][p.coordinates.y];
         part.color = 'red';
         part.borderColor = 'red';
+        result = 'DESTROYED';
       });
     } else {
       targetedCell.color = 'orange';
       targetedCell.borderColor = 'orange';
+      result = 'HIT';
     }
   } else {
     targetedCell.color = 'lightblue';
+    result = 'WATER';
   }
 
-  return { board, ships };
+  return { board, ships, result };
 }
