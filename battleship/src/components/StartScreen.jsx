@@ -220,11 +220,12 @@ const StartScreen = () => {
       ) : null}
       <div className="form">
         <input
+          className="input"
           placeholder="Player Name"
           value={name}
           onChange={handleInputChange}
         />
-        <button type="button" onClick={handleStartGame}>
+        <button className="button" type="button" onClick={handleStartGame}>
           START GAME
         </button>
       </div>

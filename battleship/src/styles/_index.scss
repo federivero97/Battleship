@@ -2,3 +2,29 @@
 @import './game-screen';
 @import './end-screen';
 @import './board';
+
+.input {
+    width: 220px;
+    padding: 10px;
+    font-size: medium;
+    color: grey;
+    border: 1px solid grey;
+    background-color: white;
+}
+
+.button {
+    width: 150px;
+    padding: 10px;
+    font-size: medium;
+    font-weight : bold ;
+    color: grey;
+    background-color: white;
+    border: 3px solid grey;
+    border-radius: 5px;
+}
+
+.button:hover {
+    color: white;
+    background-color: grey;
+    border-radius: 5px;
+}
