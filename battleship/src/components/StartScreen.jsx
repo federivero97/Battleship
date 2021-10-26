@@ -19,7 +19,7 @@ const StartScreen = () => {
 
   const [name, setName] = useState(playerName);
   const [board, setBoard] = useState(createNewBoard());
-  const [selectedCells, setSelectedCells] = useState(null);
+  const [selectedCells, setSelectedCells] = useState([]);
   const [playerShips, setPlayerShips] = useState([]);
 
   const handleCellClick = (e) => {
@@ -40,14 +40,36 @@ const StartScreen = () => {
     console.log(playerShips);
   }, [playerShips]);
 
+  const validateCell = (cell, shipId) => {
+    let valid = true;
+
+    for (let i = -1; i < 2; i += 1) {
+      for (let j = -1; j < 2; j += 1) {
+        if (
+          cell.row + i < 10 &&
+          cell.row + i >= 0 &&
+          cell.column + j < 10 &&
+          cell.column + j >= 0 &&
+          board[cell.row + i][cell.column + j].shipId &&
+          board[cell.row + i][cell.column + j].shipId !== shipId
+        ) {
+          valid = false;
+        }
+      }
+    }
+
+    return valid;
+  };
+
   const selectCell = (cell) => {
-    const newBoard = Array.from(board);
+    if (validateCell(cell, playerShips.length + 1)) {
+      const newBoard = Array.from(board);
+      newBoard[cell.row][cell.column].color = 'grey';
+      newBoard[cell.row][cell.column].shipId = playerShips.length + 1;
 
-    newBoard[cell.row][cell.column].color = 'grey';
-    newBoard[cell.row][cell.column].shipId = playerShips.length + 1;
-
-    setBoard(newBoard);
-    setSelectedCells([...selectedCells, cell]);
+      setBoard(newBoard);
+      setSelectedCells([...selectedCells, cell]);
+    }
   };
 
   const deselectCell = (cell) => {
@@ -61,11 +83,7 @@ const StartScreen = () => {
   };
 
   const handleOnDragStart = (e) => {
-    const newBoard = Array.from(board);
-    newBoard[e.row][e.column].color = 'grey';
-
-    setBoard(newBoard);
-    setSelectedCells([]);
+    selectCell(e);
   };
 
   const handleOnDragEnter = (e) => {
@@ -105,6 +123,14 @@ const StartScreen = () => {
   };
 
   const handleOnDragEnd = () => {
+    if (selectedCells.length === 1) {
+      const newBoard = Array.from(board);
+
+      newBoard[selectedCells[0].row][selectedCells[0].column].color = 'white';
+      newBoard[selectedCells[0].row][selectedCells[0].column].shipId = null;
+
+      setBoard(newBoard);
+    }
     if (selectedCells.length > 1) {
       const newShip = {
         id: playerShips.length + 1,
@@ -121,13 +147,11 @@ const StartScreen = () => {
         }),
         destroyed: false
       };
+
       setPlayerShips([...playerShips, newShip]);
-    } else {
-      const newBoard = Array.from(board);
-      newBoard[selectedCells[0].row][selectedCells[0].column].color = 'white';
-      setBoard(newBoard);
     }
-    setSelectedCells(null);
+
+    setSelectedCells([]);
   };
 
   const handleInputChange = (e) => {
