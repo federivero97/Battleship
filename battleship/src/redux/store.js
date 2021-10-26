@@ -2,13 +2,11 @@ import { createStore } from 'redux';
 import reducer from './reducers';
 
 const initialState = {
-  cpuBoard: [],
   gameIsRunning: false,
   gameResult: null,
-  playerBoard: [],
   playerName: '',
-  playerShips: [],
-  playerTurn: true
+  playerBoard: [],
+  playerShips: []
 };
 
 export default createStore(
