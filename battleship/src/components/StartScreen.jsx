@@ -6,7 +6,11 @@ import {
   setPlayerBoard,
   setGameIsRunning
 } from '../redux/actions';
-import { createNewBoard } from '../helpers/board';
+import {
+  createNewBoard,
+  createRandomBoard,
+  validateCell
+} from '../helpers/board';
 import Board from './Board';
 
 const StartScreen = () => {
@@ -20,10 +24,10 @@ const StartScreen = () => {
   const [name, setName] = useState(playerName);
   const [board, setBoard] = useState(createNewBoard());
   const [selectedCells, setSelectedCells] = useState([]);
-  const [playerShips, setPlayerShips] = useState([]);
+  const [ships, setShips] = useState([]);
 
   const handleCellClick = (e) => {
-    const ship = playerShips.find((s) => {
+    const ship = ships.find((s) => {
       return s.parts.some((p) => {
         return p.id === e.id;
       });
@@ -37,35 +41,14 @@ const StartScreen = () => {
   // }, [selectedCells]);
 
   useEffect(() => {
-    console.log(playerShips);
-  }, [playerShips]);
-
-  const validateCell = (cell, shipId) => {
-    let valid = true;
-
-    for (let i = -1; i < 2; i += 1) {
-      for (let j = -1; j < 2; j += 1) {
-        if (
-          cell.row + i < 10 &&
-          cell.row + i >= 0 &&
-          cell.column + j < 10 &&
-          cell.column + j >= 0 &&
-          board[cell.row + i][cell.column + j].shipId &&
-          board[cell.row + i][cell.column + j].shipId !== shipId
-        ) {
-          valid = false;
-        }
-      }
-    }
-
-    return valid;
-  };
+    console.log(ships);
+  }, [ships]);
 
   const selectCell = (cell) => {
-    if (validateCell(cell, playerShips.length + 1)) {
+    if (validateCell(board, cell, ships.length + 1)) {
       const newBoard = Array.from(board);
       newBoard[cell.row][cell.column].color = 'grey';
-      newBoard[cell.row][cell.column].shipId = playerShips.length + 1;
+      newBoard[cell.row][cell.column].shipId = ships.length + 1;
 
       setBoard(newBoard);
       setSelectedCells([...selectedCells, cell]);
@@ -133,7 +116,7 @@ const StartScreen = () => {
     }
     if (selectedCells.length > 1) {
       const newShip = {
-        id: playerShips.length + 1,
+        id: ships.length + 1,
         length: selectedCells.length,
         parts: selectedCells.map((c) => {
           return {
@@ -148,7 +131,7 @@ const StartScreen = () => {
         destroyed: false
       };
 
-      setPlayerShips([...playerShips, newShip]);
+      setShips([...ships, newShip]);
     }
 
     setSelectedCells([]);
@@ -165,16 +148,16 @@ const StartScreen = () => {
       flag = false;
     }
 
-    if (playerShips.length !== 5) {
+    if (ships.length !== 5) {
       flag = false;
     } else {
-      const carriers = playerShips.filter((s) => {
+      const carriers = ships.filter((s) => {
         return s.length === 4;
       });
-      const cruisers = playerShips.filter((s) => {
+      const cruisers = ships.filter((s) => {
         return s.length === 3;
       });
-      const submarine = playerShips.filter((s) => {
+      const submarine = ships.filter((s) => {
         return s.length === 2;
       });
 
@@ -199,24 +182,49 @@ const StartScreen = () => {
     }
   }
 
+  function handleCreateRandomBoard() {
+    const { newBoard, newShips } = createRandomBoard(false);
+    setBoard(newBoard);
+    setShips(newShips);
+  }
+
+  function handleCleanBoard() {
+    setBoard(createNewBoard());
+    setShips([]);
+  }
+
   return (
     <div className="start-screen">
       {board !== [] ? (
-        <Board
-          data={board}
-          handleCellClick={(e) => {
-            return handleCellClick(e);
-          }}
-          handleOnDragStart={(e) => {
-            return handleOnDragStart(e);
-          }}
-          handleOnDragEnter={(e) => {
-            return handleOnDragEnter(e);
-          }}
-          handleOnDragEnd={() => {
-            return handleOnDragEnd();
-          }}
-        />
+        <div className="board">
+          <Board
+            data={board}
+            handleCellClick={(e) => {
+              return handleCellClick(e);
+            }}
+            handleOnDragStart={(e) => {
+              return handleOnDragStart(e);
+            }}
+            handleOnDragEnter={(e) => {
+              return handleOnDragEnter(e);
+            }}
+            handleOnDragEnd={() => {
+              return handleOnDragEnd();
+            }}
+          />
+          <div className="buttons">
+            <button
+              className="button"
+              type="button"
+              onClick={handleCreateRandomBoard}
+            >
+              Random Board
+            </button>
+            <button className="button" type="button" onClick={handleCleanBoard}>
+              Clean Board
+            </button>
+          </div>
+        </div>
       ) : null}
       <div className="form">
         <input

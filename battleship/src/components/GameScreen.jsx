@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setGameIsRunning } from '../redux/actions';
-import { createRandomCPUBoard } from '../helpers/board';
+// import { createRandomBoard } from '../helpers/board';
 import Board from './Board';
 
 const GameScreen = () => {
@@ -16,7 +16,7 @@ const GameScreen = () => {
   });
 
   const [firstBoard, setFirstBoard] = useState(playerBoard);
-  const [secondBoard, setSecondBoard] = useState(createRandomCPUBoard());
+  const [secondBoard, setSecondBoard] = useState([]);
 
   function handleQuitGame() {
     setFirstBoard([]);
