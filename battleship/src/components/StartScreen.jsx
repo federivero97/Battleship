@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -9,6 +9,7 @@ import {
 } from '../redux/actions';
 import { createNewBoard, createRandomBoard } from '../helpers/board';
 import { validateCell } from '../helpers/cell';
+import { getFreeId } from '../helpers/helpers';
 import Board from './Board';
 
 const StartScreen = () => {
@@ -25,28 +26,34 @@ const StartScreen = () => {
   const [ships, setShips] = useState([]);
 
   const handleCellClick = (e) => {
-    const ship = ships.find((s) => {
-      return s.parts.some((p) => {
-        return p.id === e.id;
+    if (e.shipId) {
+      const newBoard = Array.from(board);
+      const ship = ships.find((s) => {
+        return s.id === e.shipId;
       });
-    });
 
-    console.log(ship);
+      ship.parts.forEach((p) => {
+        const cell = newBoard[p.coordinates.x][p.coordinates.y];
+        cell.color = 'white';
+        cell.shipId = null;
+      });
+
+      setBoard(newBoard);
+      setShips(
+        ships.filter((s) => {
+          return s.id !== ship.id;
+        })
+      );
+    }
   };
 
-  // useEffect(() => {
-  //   console.log(selectedCells);
-  // }, [selectedCells]);
-
-  useEffect(() => {
-    console.log(ships);
-  }, [ships]);
-
   const selectCell = (cell) => {
-    if (validateCell(board, cell, ships.length + 1)) {
+    const freeShipId = getFreeId(ships);
+
+    if (validateCell(board, cell, freeShipId)) {
       const newBoard = Array.from(board);
       newBoard[cell.row][cell.column].color = 'grey';
-      newBoard[cell.row][cell.column].shipId = ships.length + 1;
+      newBoard[cell.row][cell.column].shipId = freeShipId;
 
       setBoard(newBoard);
       setSelectedCells([...selectedCells, cell]);
@@ -113,8 +120,10 @@ const StartScreen = () => {
       setBoard(newBoard);
     }
     if (selectedCells.length > 1) {
+      const freeShipId = getFreeId(ships);
+
       const newShip = {
-        id: ships.length + 1,
+        id: freeShipId,
         length: selectedCells.length,
         parts: selectedCells.map((c) => {
           return {
@@ -146,22 +155,26 @@ const StartScreen = () => {
       flag = false;
     }
 
-    if (ships.length !== 5) {
-      flag = false;
-    } else {
+    if (ships.length === 5) {
       const carriers = ships.filter((s) => {
         return s.length === 4;
       });
       const cruisers = ships.filter((s) => {
         return s.length === 3;
       });
-      const submarine = ships.filter((s) => {
+      const submarines = ships.filter((s) => {
         return s.length === 2;
       });
 
-      if (carriers === 1 && cruisers === 3 && submarine === 1) {
+      if (
+        carriers.length !== 1 ||
+        cruisers.length !== 3 ||
+        submarines.length !== 1
+      ) {
         flag = false;
       }
+    } else {
+      flag = false;
     }
 
     return flag;
