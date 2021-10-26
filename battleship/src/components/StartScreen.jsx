@@ -40,26 +40,44 @@ const StartScreen = () => {
     console.log(playerShips);
   }, [playerShips]);
 
-  const handleOnDragStart = (e) => {
-    setSelectedCells([]);
+  const selectCell = (cell) => {
+    const newBoard = Array.from(board);
 
+    newBoard[cell.row][cell.column].color = 'grey';
+    newBoard[cell.row][cell.column].shipId = playerShips.length + 1;
+
+    setBoard(newBoard);
+    setSelectedCells([...selectedCells, cell]);
+  };
+
+  const deselectCell = (cell) => {
+    const newBoard = Array.from(board);
+
+    newBoard[cell.row][cell.column].color = 'white';
+    newBoard[cell.row][cell.column].shipId = null;
+
+    setBoard(newBoard);
+    setSelectedCells(selectedCells);
+  };
+
+  const handleOnDragStart = (e) => {
     const newBoard = Array.from(board);
     newBoard[e.row][e.column].color = 'grey';
+
     setBoard(newBoard);
+    setSelectedCells([]);
   };
 
   const handleOnDragEnter = (e) => {
-    const newBoard = Array.from(board);
-
     if (selectedCells.length >= 1) {
       const lastCell = selectedCells[selectedCells.length - 1];
       const horizontal = selectedCells.every((c) => {
         return c.row === e.row;
       });
-
       const vertical = selectedCells.every((c) => {
         return c.column === e.column;
       });
+
       if (
         selectedCells.length <= 3 &&
         ((horizontal &&
@@ -71,9 +89,7 @@ const StartScreen = () => {
             (e.row === selectedCells[selectedCells.length - 1].row - 1 ||
               e.row === selectedCells[selectedCells.length - 1].row + 1)))
       ) {
-        setSelectedCells([...selectedCells, e]);
-        newBoard[e.row][e.column].color = 'grey';
-        newBoard[e.row][e.column].shipId = playerShips.length + 1;
+        selectCell(e);
       }
 
       if (
@@ -81,16 +97,11 @@ const StartScreen = () => {
         selectedCells[selectedCells.length - 2].id === e.id
       ) {
         const lastPart = selectedCells.pop();
-        newBoard[lastPart.row][lastPart.column].color = 'white';
-        newBoard[lastPart.row][lastPart.column].shipId = null;
-        setSelectedCells(selectedCells);
+        deselectCell(lastPart);
       }
     } else {
-      setSelectedCells([...selectedCells, e]);
-      newBoard[e.row][e.column].color = 'grey';
-      newBoard[e.row][e.column].shipId = playerShips.length + 1;
+      selectCell(e);
     }
-    setBoard(newBoard);
   };
 
   const handleOnDragEnd = () => {
@@ -129,7 +140,25 @@ const StartScreen = () => {
     if (!name) {
       flag = false;
     }
-    // VALIDATE PLAYER BOARD
+
+    if (playerShips.length !== 5) {
+      flag = false;
+    } else {
+      const carriers = playerShips.filter((s) => {
+        return s.length === 4;
+      });
+      const cruisers = playerShips.filter((s) => {
+        return s.length === 3;
+      });
+      const submarine = playerShips.filter((s) => {
+        return s.length === 2;
+      });
+
+      if (carriers === 1 && cruisers === 3 && submarine === 1) {
+        flag = false;
+      }
+    }
+
     return flag;
   };
 
