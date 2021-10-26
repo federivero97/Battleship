@@ -7,6 +7,7 @@ const initialState = {
   gameResult: null,
   playerBoard: [],
   playerName: '',
+  playerShips: [],
   playerTurn: true
 };
 

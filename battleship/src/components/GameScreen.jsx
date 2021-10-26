@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setGameIsRunning } from '../redux/actions';
-// import { createRandomBoard } from '../helpers/board';
+import { createNewBoard, createRandomBoard } from '../helpers/board';
 import Board from './Board';
 
 const GameScreen = () => {
@@ -11,16 +11,30 @@ const GameScreen = () => {
   const playerName = useSelector((state) => {
     return state.playerName;
   });
-  const playerBoard = useSelector((state) => {
-    return state.playerBoard;
-  });
+  const [playerBoard, setPlayerBoard] = useState(
+    useSelector((state) => {
+      return state.playerBoard;
+    })
+  );
+  const [playerShips, setPlayerShips] = useState(
+    useSelector((state) => {
+      return state.playerShips;
+    })
+  );
+  const [CPUBoard, setCPUBoard] = useState(createNewBoard());
+  const [CPUShips, setCPUShips] = useState([]);
+  console.log(playerShips);
+  console.log(CPUShips);
 
-  const [firstBoard, setFirstBoard] = useState(playerBoard);
-  const [secondBoard, setSecondBoard] = useState([]);
+  useEffect(() => {
+    const { newBoard, newShips } = createRandomBoard(false);
+    setCPUBoard(newBoard);
+    setCPUShips(newShips);
+  }, []);
 
   function handleQuitGame() {
-    setFirstBoard([]);
-    setSecondBoard([]);
+    setPlayerBoard([]);
+    setPlayerShips([]);
     dispatch(setGameIsRunning(false));
     history.push('/result');
   }
@@ -28,13 +42,13 @@ const GameScreen = () => {
   return (
     <div className="game-screen">
       <div className="game">
-        <div className="firstBoard">
+        <div className="playerBoard">
           <span> {playerName}’s Board </span>
-          {firstBoard !== [] ? <Board data={firstBoard} /> : null}
+          {playerBoard !== [] ? <Board data={playerBoard} /> : null}
         </div>
-        <div className="secondBoard">
+        <div className="CPUBoard">
           <span> CPU’s Board </span>
-          {secondBoard !== [] ? <Board data={secondBoard} /> : null}
+          {CPUBoard !== [] ? <Board data={CPUBoard} /> : null}
         </div>
       </div>
       <div className="info">

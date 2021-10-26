@@ -1,9 +1,11 @@
 import {
   DELETE_PLAYER_BOARD,
   DELETE_PLAYER_NAME,
+  DELETE_PLAYER_SHIPS,
+  SET_GAME_IS_RUNNING,
   SET_PLAYER_BOARD,
   SET_PLAYER_NAME,
-  SET_GAME_IS_RUNNING
+  SET_PLAYER_SHIPS
 } from './types';
 
 // PLAYER BOARD ACTIONS
@@ -31,6 +33,20 @@ export const setPlayerName = (name) => {
 export const deletePlayerName = () => {
   return {
     type: DELETE_PLAYER_NAME
+  };
+};
+
+// PLAYER SHIPS ACTIONS
+export const setPlayerShips = (ships) => {
+  return {
+    type: SET_PLAYER_SHIPS,
+    payload: ships
+  };
+};
+
+export const deletePlayerShips = () => {
+  return {
+    type: DELETE_PLAYER_SHIPS
   };
 };
 

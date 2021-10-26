@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   setPlayerName,
   setPlayerBoard,
+  setPlayerShips,
   setGameIsRunning
 } from '../redux/actions';
 import {
@@ -172,6 +173,7 @@ const StartScreen = () => {
   function startGame() {
     dispatch(setPlayerName(name));
     dispatch(setPlayerBoard(board));
+    dispatch(setPlayerShips(ships));
     dispatch(setGameIsRunning(true));
     history.push('/game');
   }

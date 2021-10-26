@@ -1,9 +1,11 @@
 import {
-  SET_PLAYER_NAME,
-  DELETE_PLAYER_NAME,
-  SET_PLAYER_BOARD,
   DELETE_PLAYER_BOARD,
-  SET_GAME_IS_RUNNING
+  DELETE_PLAYER_NAME,
+  DELETE_PLAYER_SHIPS,
+  SET_GAME_IS_RUNNING,
+  SET_PLAYER_BOARD,
+  SET_PLAYER_NAME,
+  SET_PLAYER_SHIPS
 } from '../actions/types';
 
 const reducer = (state, action) => {
@@ -31,6 +33,18 @@ const reducer = (state, action) => {
       return {
         ...state,
         playerBoard: []
+      };
+
+    // PLAYER SHIPS ACTIONS
+    case SET_PLAYER_SHIPS:
+      return {
+        ...state,
+        playerShips: action.payload
+      };
+    case DELETE_PLAYER_SHIPS:
+      return {
+        ...state,
+        playerShips: []
       };
 
     // GAME IS RUNNING ACTIONS
