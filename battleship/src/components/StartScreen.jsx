@@ -132,7 +132,7 @@ const StartScreen = () => {
               x: c.row,
               y: c.column
             },
-            hited: false
+            hit: false
           };
         }),
         destroyed: false

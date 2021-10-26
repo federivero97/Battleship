@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 const Cell = (props) => {
   const {
     color,
+    borderColor,
     handleCellClick,
     handleOnDragStart,
     handleOnDragEnter,
@@ -14,7 +15,7 @@ const Cell = (props) => {
     <td
       className="cell"
       role="presentation"
-      style={{ backgroundColor: color }}
+      style={{ backgroundColor: color, borderColor }}
       onClick={() => {
         return handleCellClick(props);
       }}
@@ -33,6 +34,7 @@ const Cell = (props) => {
 };
 
 Cell.defaultProps = {
+  borderColor: 'grey',
   handleCellClick: () => {},
   handleOnDragStart: () => {},
   handleOnDragEnter: () => {},
@@ -41,6 +43,7 @@ Cell.defaultProps = {
 
 Cell.propTypes = {
   color: PropTypes.string.isRequired,
+  borderColor: PropTypes.string,
   handleCellClick: PropTypes.func,
   handleOnDragStart: PropTypes.func,
   handleOnDragEnter: PropTypes.func,

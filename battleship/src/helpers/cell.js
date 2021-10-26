@@ -33,19 +33,21 @@ export function fire(board, ships, cell) {
       return p.id === cell.id;
     });
 
-    targetedPart.hited = true;
+    targetedPart.hit = true;
 
     if (
       targetedShip.parts.every((p) => {
-        return p.hited;
+        return p.hit;
       })
     ) {
       targetedShip.parts.forEach((p) => {
         const part = board[p.coordinates.x][p.coordinates.y];
         part.color = 'red';
+        part.borderColor = 'red';
       });
     } else {
       targetedCell.color = 'orange';
+      targetedCell.borderColor = 'orange';
     }
   } else {
     targetedCell.color = 'lightblue';

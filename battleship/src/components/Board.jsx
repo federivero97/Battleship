@@ -26,6 +26,7 @@ const Board = (props) => {
                         row={column.row}
                         column={column.column}
                         color={column.color}
+                        borderColor={column.borderColor}
                         selected={column.selected}
                         shipId={column.shipId}
                         handleCellClick={(e) => {
