@@ -19,7 +19,7 @@ const StartScreen = () => {
 
   const [name, setName] = useState(playerName);
   const [board, setBoard] = useState(createNewBoard());
-  const [currentShip, setCurrentShip] = useState(null);
+  const [selectedCells, setSelectedCells] = useState(null);
   const [playerShips, setPlayerShips] = useState([]);
 
   const handleCellClick = (e) => {
@@ -33,15 +33,15 @@ const StartScreen = () => {
   };
 
   // useEffect(() => {
-  //   console.log(currentShip);
-  // }, [currentShip]);
+  //   console.log(selectedCells);
+  // }, [selectedCells]);
 
   useEffect(() => {
     console.log(playerShips);
   }, [playerShips]);
 
   const handleOnDragStart = (e) => {
-    setCurrentShip([]);
+    setSelectedCells([]);
 
     const newBoard = Array.from(board);
     newBoard[e.row][e.column].color = 'grey';
@@ -51,57 +51,59 @@ const StartScreen = () => {
   const handleOnDragEnter = (e) => {
     const newBoard = Array.from(board);
 
-    if (currentShip.length >= 1) {
-      const lastCell = currentShip[currentShip.length - 1];
-      const horizontal = currentShip.every((s) => {
-        return s.row === e.row;
+    if (selectedCells.length >= 1) {
+      const lastCell = selectedCells[selectedCells.length - 1];
+      const horizontal = selectedCells.every((c) => {
+        return c.row === e.row;
       });
 
-      const vertical = currentShip.every((s) => {
-        return s.column === e.column;
+      const vertical = selectedCells.every((c) => {
+        return c.column === e.column;
       });
       if (
-        currentShip.length <= 3 &&
+        selectedCells.length <= 3 &&
         ((horizontal &&
           e.row === lastCell.row &&
           (e.column === lastCell.column - 1 ||
-            e.column === currentShip[currentShip.length - 1].column + 1)) ||
+            e.column === selectedCells[selectedCells.length - 1].column + 1)) ||
           (vertical &&
             e.column === lastCell.column &&
-            (e.row === currentShip[currentShip.length - 1].row - 1 ||
-              e.row === currentShip[currentShip.length - 1].row + 1)))
+            (e.row === selectedCells[selectedCells.length - 1].row - 1 ||
+              e.row === selectedCells[selectedCells.length - 1].row + 1)))
       ) {
-        setCurrentShip([...currentShip, e]);
+        setSelectedCells([...selectedCells, e]);
         newBoard[e.row][e.column].color = 'grey';
+        newBoard[e.row][e.column].shipId = playerShips.length + 1;
       }
 
       if (
-        currentShip.length >= 2 &&
-        currentShip[currentShip.length - 2].id === e.id
+        selectedCells.length >= 2 &&
+        selectedCells[selectedCells.length - 2].id === e.id
       ) {
-        const lastPart = currentShip.pop();
+        const lastPart = selectedCells.pop();
         newBoard[lastPart.row][lastPart.column].color = 'white';
-        newBoard[lastPart.row][lastPart.column].shipId = playerShips.length + 1;
-        setCurrentShip(currentShip);
+        newBoard[lastPart.row][lastPart.column].shipId = null;
+        setSelectedCells(selectedCells);
       }
     } else {
-      setCurrentShip([...currentShip, e]);
+      setSelectedCells([...selectedCells, e]);
       newBoard[e.row][e.column].color = 'grey';
+      newBoard[e.row][e.column].shipId = playerShips.length + 1;
     }
     setBoard(newBoard);
   };
 
   const handleOnDragEnd = () => {
-    if (currentShip.length > 1) {
+    if (selectedCells.length > 1) {
       const newShip = {
         id: playerShips.length + 1,
-        length: currentShip.length,
-        parts: currentShip.map((p) => {
+        length: selectedCells.length,
+        parts: selectedCells.map((c) => {
           return {
-            id: p.id,
+            id: c.id,
             coordinates: {
-              x: p.row,
-              y: p.column
+              x: c.row,
+              y: c.column
             },
             damaged: false
           };
@@ -111,10 +113,10 @@ const StartScreen = () => {
       setPlayerShips([...playerShips, newShip]);
     } else {
       const newBoard = Array.from(board);
-      newBoard[currentShip[0].row][currentShip[0].column].color = 'white';
+      newBoard[selectedCells[0].row][selectedCells[0].column].color = 'white';
       setBoard(newBoard);
     }
-    setCurrentShip(null);
+    setSelectedCells(null);
   };
 
   const handleInputChange = (e) => {
