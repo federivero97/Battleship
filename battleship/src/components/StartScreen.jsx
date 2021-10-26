@@ -51,21 +51,43 @@ const StartScreen = () => {
   const handleOnDragEnter = (e) => {
     const newBoard = Array.from(board);
 
-    if (
-      currentShip.length > 1 &&
-      currentShip.some((s) => {
-        return s.id === e.id;
-      })
-    ) {
-      const lastPart = currentShip.pop();
-      newBoard[lastPart.row][lastPart.column].color = 'white';
-      newBoard[lastPart.row][lastPart.column].shipId = playerShips.length + 1;
-      setCurrentShip(currentShip);
+    if (currentShip.length >= 1) {
+      const lastCell = currentShip[currentShip.length - 1];
+      const horizontal = currentShip.every((s) => {
+        return s.row === e.row;
+      });
+
+      const vertical = currentShip.every((s) => {
+        return s.column === e.column;
+      });
+      if (
+        currentShip.length <= 3 &&
+        ((horizontal &&
+          e.row === lastCell.row &&
+          (e.column === lastCell.column - 1 ||
+            e.column === currentShip[currentShip.length - 1].column + 1)) ||
+          (vertical &&
+            e.column === lastCell.column &&
+            (e.row === currentShip[currentShip.length - 1].row - 1 ||
+              e.row === currentShip[currentShip.length - 1].row + 1)))
+      ) {
+        setCurrentShip([...currentShip, e]);
+        newBoard[e.row][e.column].color = 'grey';
+      }
+
+      if (
+        currentShip.length >= 2 &&
+        currentShip[currentShip.length - 2].id === e.id
+      ) {
+        const lastPart = currentShip.pop();
+        newBoard[lastPart.row][lastPart.column].color = 'white';
+        newBoard[lastPart.row][lastPart.column].shipId = playerShips.length + 1;
+        setCurrentShip(currentShip);
+      }
     } else {
       setCurrentShip([...currentShip, e]);
       newBoard[e.row][e.column].color = 'grey';
     }
-
     setBoard(newBoard);
   };
 
