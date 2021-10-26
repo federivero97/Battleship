@@ -26,7 +26,6 @@ const Board = (props) => {
                         row={column.row}
                         column={column.column}
                         color={column.color}
-                        available={column.available}
                         selected={column.selected}
                         shipId={column.shipId}
                         handleCellClick={(e) => {

@@ -1,29 +1,8 @@
-const rows = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
-
-export function validateCell(board, cell, shipId) {
-  let valid = true;
-
-  for (let i = -1; i < 2; i += 1) {
-    for (let j = -1; j < 2; j += 1) {
-      if (
-        cell.row + i < 10 &&
-        cell.row + i >= 0 &&
-        cell.column + j < 10 &&
-        cell.column + j >= 0 &&
-        board[cell.row + i][cell.column + j].shipId &&
-        board[cell.row + i][cell.column + j].shipId !== shipId
-      ) {
-        valid = false;
-        break;
-      }
-    }
-  }
-
-  return valid;
-}
+import { validateCell } from './cell';
 
 export function createNewBoard() {
   const board = [];
+  const rows = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
 
   for (let i = 0; i < 10; i += 1) {
     const column = [];
@@ -34,7 +13,6 @@ export function createNewBoard() {
         column: j,
         row: i,
         color: 'white',
-        available: true,
         selected: false,
         shipId: null
       });
@@ -99,7 +77,7 @@ export function createRandomBoard(hidden) {
             x: c.row,
             y: c.column
           },
-          damaged: false
+          hited: false
         };
       }),
       destroyed: false

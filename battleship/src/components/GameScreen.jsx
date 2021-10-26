@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setGameIsRunning } from '../redux/actions';
 import { createNewBoard, createRandomBoard } from '../helpers/board';
+import { fire } from '../helpers/cell';
 import Board from './Board';
 
 const GameScreen = () => {
@@ -35,38 +36,27 @@ const GameScreen = () => {
     const row = Math.floor(Math.random() * 10);
     const column = Math.floor(Math.random() * 10);
     const cell = playerBoard[row][column];
-    console.log(cell.id);
 
-    if (cell.shipId) {
-      const targetedShip = playerShips.find((s) => {
-        return s.id === cell.shipId;
-      });
+    const { board, ships } = fire(playerBoard, playerShips, cell);
 
-      console.log(targetedShip);
-    } else {
-      console.log('WATER');
-    }
+    setPlayerBoard(board);
+    setPlayerShips(ships);
     setplayerTurn(true);
   }
 
   function handleCellClick(cell) {
-    if (playerTurn) {
+    if (playerTurn && !cell.selected) {
       setplayerTurn(false);
-      console.log(cell.id);
-      if (cell.shipId) {
-        const targetedShip = CPUShips.find((s) => {
-          return s.id === cell.shipId;
-        });
 
-        console.log(targetedShip);
-      } else {
-        console.log('WATER');
-      }
+      const { board, ships } = fire(CPUBoard, CPUShips, cell);
+
+      setCPUBoard(board);
+      setCPUShips(ships);
+
+      setTimeout(() => {
+        handleCPUTurns();
+      }, 1000);
     }
-
-    setTimeout(() => {
-      handleCPUTurns();
-    }, 1000);
   }
 
   function handleQuitGame() {

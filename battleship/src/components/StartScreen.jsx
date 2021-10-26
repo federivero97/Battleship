@@ -7,11 +7,8 @@ import {
   setPlayerShips,
   setGameIsRunning
 } from '../redux/actions';
-import {
-  createNewBoard,
-  createRandomBoard,
-  validateCell
-} from '../helpers/board';
+import { createNewBoard, createRandomBoard } from '../helpers/board';
+import { validateCell } from '../helpers/cell';
 import Board from './Board';
 
 const StartScreen = () => {
@@ -126,7 +123,7 @@ const StartScreen = () => {
               x: c.row,
               y: c.column
             },
-            damaged: false
+            hited: false
           };
         }),
         destroyed: false
