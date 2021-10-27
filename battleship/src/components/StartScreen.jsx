@@ -11,6 +11,8 @@ import { createNewBoard, createRandomBoard } from '../helpers/board';
 import { validateCell } from '../helpers/cell';
 import { getFreeId, isHorizontal, isVertical } from '../helpers/helpers';
 import Board from './Board';
+import ShipsInfo from './ShipsInfo';
+import BoardHelperInfo from './BoardHelperInfo';
 
 const StartScreen = () => {
   const history = useHistory();
@@ -201,37 +203,47 @@ const StartScreen = () => {
 
   return (
     <div className="start-screen">
-      {board !== [] ? (
-        <div className="board">
-          <Board
-            data={board}
-            handleCellClick={(e) => {
-              return handleCellClick(e);
-            }}
-            handleOnDragStart={(e) => {
-              return handleOnDragStart(e);
-            }}
-            handleOnDragEnter={(e) => {
-              return handleOnDragEnter(e);
-            }}
-            handleOnDragEnd={() => {
-              return handleOnDragEnd();
-            }}
-          />
-          <div className="buttons">
-            <button
-              className="button"
-              type="button"
-              onClick={handleCreateRandomBoard}
-            >
-              Random Board
-            </button>
-            <button className="button" type="button" onClick={handleCleanBoard}>
-              Clean Board
-            </button>
+      <div className="game">
+        {board !== [] ? (
+          <div className="board">
+            <Board
+              data={board}
+              handleCellClick={(e) => {
+                return handleCellClick(e);
+              }}
+              handleOnDragStart={(e) => {
+                return handleOnDragStart(e);
+              }}
+              handleOnDragEnter={(e) => {
+                return handleOnDragEnter(e);
+              }}
+              handleOnDragEnd={() => {
+                return handleOnDragEnd();
+              }}
+            />
+            <div className="buttons">
+              <button
+                className="button"
+                type="button"
+                onClick={handleCreateRandomBoard}
+              >
+                Random Board
+              </button>
+              <button
+                className="button"
+                type="button"
+                onClick={handleCleanBoard}
+              >
+                Clean Board
+              </button>
+            </div>
           </div>
+        ) : null}
+        <div className="board-info">
+          <ShipsInfo ships={ships} />
+          <BoardHelperInfo />
         </div>
-      ) : null}
+      </div>
       <div className="form">
         <input
           className="input"

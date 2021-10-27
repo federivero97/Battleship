@@ -1,0 +1,14 @@
+.ships-info {
+    .ships {
+        display: 'flex';
+        align-items: 'center';
+
+        .ship {
+            margin: 10px;
+        }
+
+        .ship-length {
+            color: grey;
+        }
+    }
+}

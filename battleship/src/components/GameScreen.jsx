@@ -195,11 +195,11 @@ const GameScreen = () => {
     <div className="game-screen">
       <div className="game">
         <div className="playerBoard">
-          <span> {playerName}’s Board </span>
+          <span> {playerName} </span>
           {playerBoard !== [] ? <Board data={playerBoard} /> : null}
         </div>
         <div className="CPUBoard">
-          <span> CPU’s Board </span>
+          <span> CPU </span>
           {CPUBoard !== [] ? (
             <Board
               data={CPUBoard}
@@ -216,7 +216,7 @@ const GameScreen = () => {
           <span className="player"> {playerTurn ? playerName : 'CPU'} </span>
         </div>
         <button className="button" type="button" onClick={handleQuitGame}>
-          QUIT GAME
+          SURRENDER
         </button>
       </div>
     </div>

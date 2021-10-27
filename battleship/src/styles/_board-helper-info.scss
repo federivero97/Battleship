@@ -1,0 +1,16 @@
+.helper_board_info {
+    margin: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    border: 3px solid lightgrey;
+    border-radius: 5px;
+
+    .text {
+        margin: 20px;
+        font-size: small;
+        color: grey;
+    }
+}
