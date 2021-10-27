@@ -26,6 +26,7 @@ const StartScreen = () => {
   const [board, setBoard] = useState(createNewBoard());
   const [selectedCells, setSelectedCells] = useState([]);
   const [ships, setShips] = useState([]);
+  const [validationErrorMessages, setValidationErrorMessages] = useState([]);
 
   const handleCellClick = (e) => {
     if (e.shipId) {
@@ -142,13 +143,24 @@ const StartScreen = () => {
 
   const handleInputChange = (e) => {
     setName(e.target.value);
+
+    const errorMessages = validationErrorMessages.filter((error) => {
+      return error.error !== 'player-name';
+    });
+
+    setValidationErrorMessages(errorMessages);
   };
 
   const validation = () => {
     let flag = true;
+    const errorMessages = [];
 
     if (!name) {
       flag = false;
+      errorMessages.push({
+        error: 'player-name',
+        message: 'Insert player name.'
+      });
     }
 
     if (ships.length === 5) {
@@ -162,17 +174,36 @@ const StartScreen = () => {
         return s.length === 2;
       });
 
-      if (
-        carriers.length !== 1 ||
-        cruisers.length !== 3 ||
-        submarines.length !== 1
-      ) {
+      if (carriers.length !== 1) {
         flag = false;
+        errorMessages.push({
+          error: 'ships-type',
+          message: 'You must to have only 1 carrier(4).'
+        });
+      }
+      if (cruisers.length !== 3) {
+        flag = false;
+        errorMessages.push({
+          error: 'ships-type',
+          message: 'You must to have 3 crussiers(3).'
+        });
+      }
+      if (submarines.length !== 1) {
+        flag = false;
+        errorMessages.push({
+          error: 'ships-type',
+          message: 'You must to have only 1 submarine(1).'
+        });
       }
     } else {
       flag = false;
+      errorMessages.push({
+        error: 'ships-number',
+        message: 'You must to have 5 ships.'
+      });
     }
 
+    setValidationErrorMessages(errorMessages);
     return flag;
   };
 
@@ -254,6 +285,13 @@ const StartScreen = () => {
         <button className="button" type="button" onClick={handleStartGame}>
           START GAME
         </button>
+        {validationErrorMessages.length ? (
+          <div className="errorMessages">
+            {validationErrorMessages.map((e) => {
+              return <p>*{e.message}</p>;
+            })}
+          </div>
+        ) : null}
       </div>
     </div>
   );
