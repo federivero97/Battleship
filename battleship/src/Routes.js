@@ -10,8 +10,8 @@ const Routes = () => {
     return state.gameIsRunning;
   });
 
-  const playerBoard = useSelector((state) => {
-    return state.playerBoard;
+  const gameResult = useSelector((state) => {
+    return state.gameResult;
   });
 
   return (
@@ -31,7 +31,7 @@ const Routes = () => {
         )}
       </Route>
       <Route exact path="/result">
-        {!gameIsRunning && playerBoard.length ? (
+        {!gameIsRunning && gameResult !== null ? (
           <EndScreen />
         ) : (
           <Redirect to={{ pathname: '/start' }} />

@@ -1,7 +1,12 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { deletePlayerBoard } from '../redux/actions';
+import {
+  deletePlayerBoard,
+  deletePlayerShips,
+  setGameIsRunning,
+  setGameResult
+} from '../redux/actions';
 
 const EndScreen = () => {
   const history = useHistory();
@@ -12,6 +17,9 @@ const EndScreen = () => {
 
   function handleClick() {
     dispatch(deletePlayerBoard());
+    dispatch(deletePlayerShips());
+    dispatch(setGameIsRunning(false));
+    dispatch(setGameResult(null));
     history.push('/start');
   }
 
