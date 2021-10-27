@@ -6,17 +6,17 @@ const ShipsInfo = (props) => {
   const { ships } = props;
   const typeShips = [
     {
-      name: 'carriers',
+      name: 'Carriers',
       length: 4,
       amount: 1
     },
     {
-      name: 'cruisers',
+      name: 'Cruisers',
       length: 3,
       amount: 3
     },
     {
-      name: 'submarine',
+      name: 'Submarines',
       length: 2,
       amount: 1
     }
@@ -24,37 +24,28 @@ const ShipsInfo = (props) => {
 
   return (
     <div className="ships-info">
-      <table>
-        <tbody>
-          <div className="ships">
-            {typeShips.map((type) => {
-              return (
+      {typeShips.map((type) => {
+        return (
+          <div key={type.name} className="ship-info">
+            <div className="info">
+              {type.name} (
+              {
+                ships.filter((s) => {
+                  return s.length === type.length;
+                }).length
+              }
+              /{type.amount}) :
+            </div>
+            <table className="ship">
+              <tbody>
                 <tr>
-                  <div
-                    className="info"
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      alignItems: 'center'
-                    }}
-                  >
-                    <Ship length={type.length} />
-                    <div className="ship-length">
-                      (
-                      {
-                        ships.filter((s) => {
-                          return s.length === type.length;
-                        }).length
-                      }
-                      /{type.amount})
-                    </div>
-                  </div>
+                  <Ship length={type.length} />
                 </tr>
-              );
-            })}
+              </tbody>
+            </table>
           </div>
-        </tbody>
-      </table>
+        );
+      })}
     </div>
   );
 };
@@ -67,12 +58,12 @@ const Ship = (props) => {
   const renderCells = () => {
     const cells = [];
     for (let i = 0; i < props.length; i += 1) {
-      cells.push(<Cell color="grey" />);
+      cells.push(<Cell key={i} color="grey" />);
     }
     return cells;
   };
 
-  return <div className="ship"> {renderCells()} </div>;
+  return renderCells();
 };
 
 Ship.propTypes = {

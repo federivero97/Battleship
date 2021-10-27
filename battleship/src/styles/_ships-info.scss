@@ -1,13 +1,18 @@
 .ships-info {
-    .ships {
-        display: 'flex';
-        align-items: 'center';
+    display: 'flex';
+    flex-direction: column;
+    align-items: 'center';
 
+    .ship-info {
+        margin: 10px;
         .ship {
-            margin: 10px;
+            display: 'flex';
+            flex-direction: column;
         }
-
-        .ship-length {
+        .info {
+            display: 'flex';
+            flex-direction: 'row';
+            align-items: 'center';
             color: grey;
         }
     }

@@ -177,22 +177,22 @@ const StartScreen = () => {
       if (carriers.length !== 1) {
         flag = false;
         errorMessages.push({
-          error: 'ships-type',
-          message: 'You must to have only 1 carrier(4).'
+          error: 'carriers-number',
+          message: 'You must to have 1 carrier.'
         });
       }
       if (cruisers.length !== 3) {
         flag = false;
         errorMessages.push({
-          error: 'ships-type',
-          message: 'You must to have 3 crussiers(3).'
+          error: 'crussiers-number',
+          message: 'You must to have 3 crussiers.'
         });
       }
       if (submarines.length !== 1) {
         flag = false;
         errorMessages.push({
-          error: 'ships-type',
-          message: 'You must to have only 1 submarine(1).'
+          error: 'submarines-number',
+          message: 'You must to have 1 submarine.'
         });
       }
     } else {
@@ -288,7 +288,7 @@ const StartScreen = () => {
         {validationErrorMessages.length ? (
           <div className="errorMessages">
             {validationErrorMessages.map((e) => {
-              return <p>*{e.message}</p>;
+              return <p key={e.error}>*{e.message}</p>;
             })}
           </div>
         ) : null}
