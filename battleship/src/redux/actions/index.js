@@ -3,6 +3,7 @@ import {
   DELETE_PLAYER_NAME,
   DELETE_PLAYER_SHIPS,
   SET_GAME_IS_RUNNING,
+  SET_GAME_RESULT,
   SET_PLAYER_BOARD,
   SET_PLAYER_NAME,
   SET_PLAYER_SHIPS
@@ -55,5 +56,13 @@ export const setGameIsRunning = (bool) => {
   return {
     type: SET_GAME_IS_RUNNING,
     payload: bool
+  };
+};
+
+// GAME RESULT ACTIONS
+export const setGameResult = (payload) => {
+  return {
+    type: SET_GAME_RESULT,
+    payload
   };
 };

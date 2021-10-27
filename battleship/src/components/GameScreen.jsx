@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { setGameIsRunning } from '../redux/actions';
+import { setGameIsRunning, setGameResult } from '../redux/actions';
 import { createNewBoard, createRandomBoard } from '../helpers/board';
 import { fire } from '../helpers/cell';
 import Board from './Board';
@@ -35,7 +35,7 @@ const GameScreen = () => {
   const [targetShip, setTargetShip] = useState([]);
 
   useEffect(() => {
-    const { newBoard, newShips } = createRandomBoard(false);
+    const { newBoard, newShips } = createRandomBoard(true);
     setCPUBoard(newBoard);
     setCPUShips(newShips);
   }, []);
@@ -120,6 +120,18 @@ const GameScreen = () => {
     return targetCell;
   }
 
+  function finishGame(result, message) {
+    setTimeout(() => {
+      setPlayerBoard([]);
+      setPlayerShips([]);
+      setCPUBoard([]);
+      setCPUShips([]);
+      dispatch(setGameResult({ result, message }));
+      dispatch(setGameIsRunning(false));
+      history.push('/result');
+    }, 1000);
+  }
+
   function handleCPUTurns() {
     const targetCell = selectTargetCell();
 
@@ -140,7 +152,16 @@ const GameScreen = () => {
 
     setPlayerBoard(board);
     setPlayerShips(ships);
-    setplayerTurn(true);
+
+    if (
+      ships.every((s) => {
+        return s.destroyed;
+      })
+    ) {
+      finishGame(false, 'YOU LOST');
+    } else {
+      setplayerTurn(true);
+    }
   }
 
   function handleCellClick(cell) {
@@ -152,17 +173,22 @@ const GameScreen = () => {
       setCPUBoard(board);
       setCPUShips(ships);
 
-      setTimeout(() => {
-        handleCPUTurns();
-      }, 500);
+      if (
+        ships.every((s) => {
+          return s.destroyed;
+        })
+      ) {
+        finishGame(true, 'YOU WON');
+      } else {
+        setTimeout(() => {
+          handleCPUTurns();
+        }, 500);
+      }
     }
   }
 
   function handleQuitGame() {
-    setPlayerBoard([]);
-    setPlayerShips([]);
-    dispatch(setGameIsRunning(false));
-    history.push('/result');
+    finishGame(false, 'YOU SURRENDERER');
   }
 
   return (

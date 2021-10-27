@@ -3,6 +3,7 @@ import {
   DELETE_PLAYER_NAME,
   DELETE_PLAYER_SHIPS,
   SET_GAME_IS_RUNNING,
+  SET_GAME_RESULT,
   SET_PLAYER_BOARD,
   SET_PLAYER_NAME,
   SET_PLAYER_SHIPS
@@ -52,6 +53,13 @@ const reducer = (state, action) => {
       return {
         ...state,
         gameIsRunning: action.payload
+      };
+
+    // GAME RESULT ACTIONS
+    case SET_GAME_RESULT:
+      return {
+        ...state,
+        gameResult: action.payload
       };
     default:
       return state;

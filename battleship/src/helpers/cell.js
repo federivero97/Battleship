@@ -47,6 +47,8 @@ export function fire(board, ships, cell) {
         part.borderColor = 'red';
         result = 'DESTROYED';
       });
+
+      targetedShip.destroyed = true;
     } else {
       targetedCell.color = 'orange';
       targetedCell.borderColor = 'orange';
