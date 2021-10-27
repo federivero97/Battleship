@@ -6,7 +6,7 @@ import {
   deletePlayerShips,
   setGameIsRunning,
   setGameResult
-} from '../redux/actions';
+} from '../../redux/actions';
 
 const EndScreen = () => {
   const history = useHistory();

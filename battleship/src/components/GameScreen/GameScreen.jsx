@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { setGameIsRunning, setGameResult } from '../redux/actions';
-import { createNewBoard, createRandomBoard } from '../helpers/board';
-import { fire } from '../helpers/cell';
-import Board from './Board';
+import { setGameIsRunning, setGameResult } from '../../redux/actions';
+import { createNewBoard, createRandomBoard } from '../../helpers/board';
+import { fire } from '../../helpers/cell';
+import Board from '../Board/Board';
 import {
   getMinByAttribute,
   getMaxByAttribute,
   isHorizontal,
   isVertical,
   shuffle
-} from '../helpers/helpers';
+} from '../../helpers/helpers';
 
 const GameScreen = () => {
   const history = useHistory();

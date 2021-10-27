@@ -1,9 +1,9 @@
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import StartScreen from './components/StartScreen';
-import GameScreen from './components/GameScreen';
-import EndScreen from './components/EndScreen';
+import StartScreen from './components/StartScreen/StartScreen';
+import GameScreen from './components/GameScreen/GameScreen';
+import EndScreen from './components/EndScreen/EndScreen';
 
 const Routes = () => {
   const gameIsRunning = useSelector((state) => {

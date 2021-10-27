@@ -1,1 +1,35 @@
-@import './styles';
+@import './components/StartScreen/start-screen';
+@import './components/GameScreen/game-screen';
+@import './/components/EndScreen/end-screen';
+@import './components/Board/board';
+@import './components/Cell/cell';
+@import './components/BoardHelperInfo/board-helper-info';
+@import './components/ShipsInfo/ships-info';
+
+.input {
+    width: 220px;
+    padding: 10px;
+    margin: 10px;
+    font-size: medium;
+    color: grey;
+    border: 1px solid grey;
+    background-color: white;
+}
+
+.button {
+    width: 150px;
+    padding: 10px;
+    margin: 10px;
+    font-size: medium;
+    font-weight : bold ;
+    color: grey;
+    background-color: white;
+    border: 3px solid grey;
+    border-radius: 5px;
+}
+
+.button:hover {
+    color: white;
+    background-color: grey;
+    border-radius: 5px;
+}

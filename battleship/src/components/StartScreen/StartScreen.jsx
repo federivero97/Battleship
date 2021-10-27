@@ -6,13 +6,13 @@ import {
   setPlayerBoard,
   setPlayerShips,
   setGameIsRunning
-} from '../redux/actions';
-import { createNewBoard, createRandomBoard } from '../helpers/board';
-import { validateCell } from '../helpers/cell';
-import { getFreeId, isHorizontal, isVertical } from '../helpers/helpers';
-import Board from './Board';
-import ShipsInfo from './ShipsInfo';
-import BoardHelperInfo from './BoardHelperInfo';
+} from '../../redux/actions';
+import { createNewBoard, createRandomBoard } from '../../helpers/board';
+import { validateCell } from '../../helpers/cell';
+import { getFreeId, isHorizontal, isVertical } from '../../helpers/helpers';
+import Board from '../Board/Board';
+import ShipsInfo from '../ShipsInfo/ShipsInfo';
+import BoardHelperInfo from '../BoardHelperInfo/BoardHelperInfo';
 
 const StartScreen = () => {
   const history = useHistory();
