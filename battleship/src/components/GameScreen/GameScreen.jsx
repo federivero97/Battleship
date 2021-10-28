@@ -40,10 +40,15 @@ const GameScreen = () => {
     setCPUShips(newShips);
   }, []);
 
+  // Strategy to choose the cell to attack
   function selectTargetCell() {
     let targetCell = null;
 
+    // If there is a target ship
     if (targetShip.length > 0) {
+      // If the target ship is horizontal,
+      // my possible targets will be left and right
+      // and if it is vertical they will be up and down.
       let directions = [];
       if (isHorizontal(targetShip)) {
         directions.push('left', 'right');
@@ -54,6 +59,10 @@ const GameScreen = () => {
 
       directions = shuffle(directions);
 
+      // As long as there is no valid target,
+      // choose a shot direction at random
+      // Check if the next cell to the last ship's part in that direction has been attacked
+      // If it is not valid, I check in another direction
       while (targetCell === null) {
         const selectedDirection = directions.pop();
 
@@ -107,6 +116,8 @@ const GameScreen = () => {
         }
       }
     } else {
+      // If there isn't a target ship
+      // Target a random cell that has not been selected
       while (targetCell === null) {
         const row = Math.floor(Math.random() * 10);
         const column = Math.floor(Math.random() * 10);
@@ -134,7 +145,8 @@ const GameScreen = () => {
     const targetCell = selectTargetCell();
 
     const { board, ships, result } = fire(playerBoard, playerShips, targetCell);
-
+    // if the shot damaged a ship, mark the ship as a target,
+    // if it is destroyed, eliminate the target ship
     switch (result) {
       case 'WATER':
         break;
