@@ -34,6 +34,7 @@ const Cell = (props) => {
 };
 
 Cell.defaultProps = {
+  color: 'white',
   borderColor: 'grey',
   handleCellClick: () => {},
   handleOnDragStart: () => {},
@@ -42,7 +43,7 @@ Cell.defaultProps = {
 };
 
 Cell.propTypes = {
-  color: PropTypes.string.isRequired,
+  color: PropTypes.string,
   borderColor: PropTypes.string,
   handleCellClick: PropTypes.func,
   handleOnDragStart: PropTypes.func,

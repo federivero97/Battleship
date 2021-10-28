@@ -121,15 +121,13 @@ const GameScreen = () => {
   }
 
   function finishGame(result, message) {
-    setTimeout(() => {
-      setPlayerBoard([]);
-      setPlayerShips([]);
-      setCPUBoard([]);
-      setCPUShips([]);
-      dispatch(setGameResult({ result, message }));
-      dispatch(setGameIsRunning(false));
-      history.push('/result');
-    }, 1000);
+    setPlayerBoard([]);
+    setPlayerShips([]);
+    setCPUBoard([]);
+    setCPUShips([]);
+    dispatch(setGameResult({ result, message }));
+    dispatch(setGameIsRunning(false));
+    history.push('/result');
   }
 
   function handleCPUTurns() {

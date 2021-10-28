@@ -1,9 +1,10 @@
 import React from "react";
-import { shallow } from "enzyme";
+import renderer from 'react-test-renderer';
 import BoardHelperInfo from './BoardHelperInfo';
 
-describe("rendering components", () => {
-    it("renders BoardHelperInfo component without crashing", () => {
-        shallow(<BoardHelperInfo />);
+describe("BoardHelperInfo Component", () => {
+    it('should render properly', () => {
+        const tree = renderer.create(<BoardHelperInfo />).toJSON();
+        expect(tree).toMatchSnapshot();
     });
 })

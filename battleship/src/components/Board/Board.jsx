@@ -14,46 +14,45 @@ const Board = (props) => {
   return (
     <table className="table">
       <tbody>
-        {data !== []
-          ? data.map((row) => {
-              return (
-                <tr key={row[0].row}>
-                  {row.map((column) => {
-                    return (
-                      <Cell
-                        key={column.id}
-                        id={column.id}
-                        row={column.row}
-                        column={column.column}
-                        color={column.color}
-                        borderColor={column.borderColor}
-                        selected={column.selected}
-                        shipId={column.shipId}
-                        handleCellClick={(e) => {
-                          return handleCellClick(e);
-                        }}
-                        handleOnDragStart={(e) => {
-                          return handleOnDragStart(e);
-                        }}
-                        handleOnDragEnter={(e) => {
-                          return handleOnDragEnter(e);
-                        }}
-                        handleOnDragEnd={() => {
-                          return handleOnDragEnd();
-                        }}
-                      />
-                    );
-                  })}
-                </tr>
-              );
-            })
-          : null}
+        {data.map((row) => {
+          return (
+            <tr key={row[0].row}>
+              {row.map((column) => {
+                return (
+                  <Cell
+                    key={column.id}
+                    id={column.id}
+                    row={column.row}
+                    column={column.column}
+                    color={column.color}
+                    borderColor={column.borderColor}
+                    selected={column.selected}
+                    shipId={column.shipId}
+                    handleCellClick={(e) => {
+                      return handleCellClick(e);
+                    }}
+                    handleOnDragStart={(e) => {
+                      return handleOnDragStart(e);
+                    }}
+                    handleOnDragEnter={(e) => {
+                      return handleOnDragEnter(e);
+                    }}
+                    handleOnDragEnd={() => {
+                      return handleOnDragEnd();
+                    }}
+                  />
+                );
+              })}
+            </tr>
+          );
+        })}
       </tbody>
     </table>
   );
 };
 
 Board.defaultProps = {
+  data: [],
   handleCellClick: () => {},
   handleOnDragStart: () => {},
   handleOnDragEnter: () => {},
@@ -61,7 +60,7 @@ Board.defaultProps = {
 };
 
 Board.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.array).isRequired,
+  data: PropTypes.arrayOf(PropTypes.array),
   handleCellClick: PropTypes.func,
   handleOnDragStart: PropTypes.func,
   handleOnDragEnter: PropTypes.func,
